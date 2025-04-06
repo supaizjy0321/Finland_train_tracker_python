@@ -10,8 +10,6 @@ A real-time web application that displays the current locations of trains across
 - 🔍 **Precise Search**: Find specific trains by ID with exact matching
 - 🔄 **Auto-refresh**: Data updates automatically every 30 seconds
 - 🗺️ **Interactive Map**: Clean and intuitive map interface with color-coded train markers
-- 📊 **Train Statistics**: View counts of moving and stationary trains
-- 📱 **Responsive Design**: Works on desktop and mobile devices
 
 ## How It Works
 
