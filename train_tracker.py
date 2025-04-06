@@ -273,9 +273,9 @@ def update_map(train_data):
             hover_text += f"Route: {train['route_id']}<br>"
         
         if pd.notna(train['trip_id']):
-            hover_text += f"Trip: {train['trip_id']}<br>"
+            hover_text += f"Trip: {train['trip_id']}"
             
-        hover_text += f"Updated: {timestamp_str}"
+        # Removed the "Updated: timestamp" line per user's request
         
         hover_texts.append(hover_text)
     
