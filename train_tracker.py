@@ -409,4 +409,8 @@ def update_train_list(train_data, search_value):
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use the PORT environment variable if it's set (for Heroku deployment)
+    # otherwise use the default port 8050
+    import os
+    port = int(os.environ.get("PORT", 8050))
+    app.run(debug=False, host='0.0.0.0', port=port)
