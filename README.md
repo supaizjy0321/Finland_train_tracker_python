@@ -2,7 +2,7 @@
 
 A real-time web application that displays the current locations of trains across Finland using the GTFS-RT data from the Finnish Transport Infrastructure Agency.
 
-![Finland Train Tracker](https://i.imgur.com/JzfJmXV.png)
+![Finland Train Tracker](https://github.com/supaizjy0321/financial-risk-management/blob/main/Real-time%20Train%20Tracker.png)
 
 ## Features
 
@@ -83,21 +83,6 @@ http://127.0.0.1:8050/
 6. **Manual Refresh**: Click the "Refresh" button to update the data immediately
 7. **Auto-refresh**: Data automatically updates every 30 seconds
 
-## Online Demo
-
-You can view a live demo of this application at:
-[https://finland-train-tracker-python.vercel.app/](https://finland-train-tracker-python.vercel.app/)
-
-## Deployment on Vercel
-
-This application can be deployed on Vercel for free using a modified version without the pandas dependency (to stay under Vercel's 250MB size limit):
-
-1. **Fork or clone this repository** to your GitHub account
-2. **Sign up for Vercel** (free tier) at [vercel.com](https://vercel.com/) using your GitHub account
-3. **Create new project** from your forked/cloned repository 
-4. **Deploy** without changing any settings - Vercel will automatically detect the Python app
-
-The repository includes a special Vercel-optimized version in the `/api` folder that uses standard Python data structures instead of pandas to stay under Vercel's serverless function size limits.
 
 ## Customization
 
@@ -113,7 +98,6 @@ You can customize various aspects of the application by modifying the following:
 - **[Plotly](https://plotly.com/python/)**: Interactive visualization library with MapLibre integration
 - **[Pandas](https://pandas.pydata.org/)**: Data manipulation and analysis
 - **[GTFS-RT](https://developers.google.com/transit/gtfs-realtime)**: Protocol Buffers for real-time transit data
-- **[Requests](https://requests.readthedocs.io/)**: HTTP library for API communication
 
 ## Data Source
 

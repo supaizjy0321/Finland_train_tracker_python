@@ -1,1 +1,0 @@
-web: gunicorn train_tracker:server

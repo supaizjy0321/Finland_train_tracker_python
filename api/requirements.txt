@@ -1,9 +1,0 @@
-# Minimize package sizes for Vercel's 250MB limit
-dash==3.0.2
-plotly==6.0.1
-requests==2.32.3
-gtfs-realtime-bindings==1.0.0
-pytz==2025.2
-
-# Don't include pandas in requirements.txt for Vercel deployment
-# pandas==2.2.3 # Too large for Vercel
