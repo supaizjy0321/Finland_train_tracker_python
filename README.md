@@ -83,6 +83,15 @@ http://127.0.0.1:8050/
 6. **Manual Refresh**: Click the "Refresh" button to update the data immediately
 7. **Auto-refresh**: Data automatically updates every 30 seconds
 
+## Online Demo
+
+You can also view a live demo of this application at:
+[https://finland-train-tracker-51e91f6fe982.herokuapp.com/](https://finland-train-tracker-51e91f6fe982.herokuapp.com/)
+
+## Note for Developers
+
+This application includes configuration files (Procfile, runtime.txt) that enable deployment to cloud platforms like Heroku. These files don't affect local usage and can be ignored if you're running the application locally.
+
 ## Customization
 
 You can customize various aspects of the application by modifying the following:
