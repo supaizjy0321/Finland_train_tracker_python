@@ -6,6 +6,7 @@ import requests
 from google.transit import gtfs_realtime_pb2
 from datetime import datetime
 import pandas as pd
+import time
 
 # Initialize the Dash app
 app = dash.Dash(__name__, title="Real-Time Train Tracker")
@@ -20,12 +21,41 @@ FINLAND_CENTER = {"lat": 62.2426, "lon": 25.7473}
 # Set the refresh interval in seconds
 REFRESH_INTERVAL = 30
 
+# Create a persistent session for requests
+session = requests.Session()
+session.headers.update({
+    'Accept': 'application/x-protobuf',
+    'User-Agent': 'FinlandTrainTracker/1.0',
+    'Cache-Control': 'no-cache',
+    'Digitraffic-User': 'FinlandTrainTracker'
+})
+
+# Track last successful request time to manage request frequency
+last_request_time = 0
+MIN_REQUEST_INTERVAL = 5  # Minimum seconds between requests
+
 # Function to fetch and process GTFS-RT data
 def fetch_train_locations():
+    global last_request_time
+    
     try:
-        # Make the request
-        response = requests.get(LOCATIONS_URL, headers={'Accept': 'application/x-protobuf'})
+        # Check if we need to wait before making another request
+        current_time = time.time()
+        time_since_last_request = current_time - last_request_time
+        
+        if time_since_last_request < MIN_REQUEST_INTERVAL:
+            # If we've made a request too recently, wait a bit
+            wait_time = MIN_REQUEST_INTERVAL - time_since_last_request
+            print(f"Waiting {wait_time:.2f} seconds before making another request...")
+            time.sleep(wait_time)
+        
+        # Make the request using the session
+        print(f"Fetching train data from {LOCATIONS_URL}...")
+        response = session.get(LOCATIONS_URL, timeout=15)
         response.raise_for_status()
+        
+        # Update last successful request time
+        last_request_time = time.time()
         
         # Parse the protobuf message
         feed = gtfs_realtime_pb2.FeedMessage()
@@ -79,8 +109,28 @@ def fetch_train_locations():
                 })
         
         return train_data, datetime.now().strftime('%H:%M:%S')
+    except requests.exceptions.HTTPError as http_err:
+        error_msg = f"HTTP Error occurred: {http_err}"
+        print(error_msg)
+        # Check specifically for rate limiting or authentication issues
+        if hasattr(http_err, 'response') and http_err.response.status_code in [429, 403]:
+            print("Possible rate limiting or authentication issue. Adding delay before next request.")
+        return [], datetime.now().strftime('%H:%M:%S') + " (API Error)"
+    except requests.exceptions.ConnectionError:
+        error_msg = "Connection Error: Could not connect to the API"
+        print(error_msg)
+        return [], datetime.now().strftime('%H:%M:%S') + " (Connection Error)"
+    except requests.exceptions.Timeout:
+        error_msg = "Timeout Error: The request timed out"
+        print(error_msg)
+        return [], datetime.now().strftime('%H:%M:%S') + " (Timeout)"
+    except requests.exceptions.RequestException as req_err:
+        error_msg = f"Request Error: {req_err}"
+        print(error_msg)
+        return [], datetime.now().strftime('%H:%M:%S') + " (Request Error)"
     except Exception as e:
-        print(f"Error fetching train locations: {e}")
+        error_msg = f"Unexpected error: {e}"
+        print(error_msg)
         return [], datetime.now().strftime('%H:%M:%S') + " (Error)"
 
 # Get initial data
