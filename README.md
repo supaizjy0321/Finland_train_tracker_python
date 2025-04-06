@@ -90,14 +90,14 @@ You can view a live demo of this application at:
 
 ## Deployment on Vercel
 
-This application can be easily deployed on Vercel for free:
+This application can be deployed on Vercel for free using a modified version without the pandas dependency (to stay under Vercel's 250MB size limit):
 
 1. **Fork or clone this repository** to your GitHub account
 2. **Sign up for Vercel** (free tier) at [vercel.com](https://vercel.com/) using your GitHub account
 3. **Create new project** from your forked/cloned repository 
 4. **Deploy** without changing any settings - Vercel will automatically detect the Python app
 
-The application includes all necessary configuration files (`vercel.json` and the `/api` folder) for Vercel deployment.
+The repository includes a special Vercel-optimized version in the `/api` folder that uses standard Python data structures instead of pandas to stay under Vercel's serverless function size limits.
 
 ## Customization
 
