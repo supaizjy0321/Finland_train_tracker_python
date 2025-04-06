@@ -101,7 +101,7 @@ You can customize various aspects of the application by modifying the following:
 
 ## Data Source
 
-This project uses the open data API provided by the Finnish Transport Infrastructure Agency:
+This project uses the open data API provided by the Finland Transport Infrastructure Agency:
 - **GTFS-RT API Endpoint**: https://rata.digitraffic.fi/api/v1/trains/gtfs-rt-locations
 
 ## License
