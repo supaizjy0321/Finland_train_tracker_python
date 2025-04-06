@@ -21,13 +21,12 @@ FINLAND_CENTER = {"lat": 62.2426, "lon": 25.7473}
 # Set the refresh interval in seconds
 REFRESH_INTERVAL = 30
 
-# Create a persistent session for requests
+# Create a persistent session for requests with the exact headers known to work
 session = requests.Session()
 session.headers.update({
     'Accept': 'application/x-protobuf',
-    'User-Agent': 'FinlandTrainTracker/1.0',
-    'Cache-Control': 'no-cache',
-    'Digitraffic-User': 'FinlandTrainTracker'
+    'User-Agent': 'TrainTrackerTest/1.0',
+    'Digitraffic-User': 'TrainTrackerTest'
 })
 
 # Track last successful request time to manage request frequency
@@ -39,22 +38,25 @@ def fetch_train_locations():
     global last_request_time
     
     try:
-        # Check if we need to wait before making another request
+        # Enforce minimum time between requests to avoid rate limiting
         current_time = time.time()
         time_since_last_request = current_time - last_request_time
         
-        if time_since_last_request < MIN_REQUEST_INTERVAL:
-            # If we've made a request too recently, wait a bit
+        if time_since_last_request < MIN_REQUEST_INTERVAL and last_request_time > 0:
             wait_time = MIN_REQUEST_INTERVAL - time_since_last_request
-            print(f"Waiting {wait_time:.2f} seconds before making another request...")
+            print(f"Rate limit: waiting {wait_time:.2f} seconds...")
             time.sleep(wait_time)
         
-        # Make the request using the session
-        print(f"Fetching train data from {LOCATIONS_URL}...")
-        response = session.get(LOCATIONS_URL, timeout=15)
-        response.raise_for_status()
+        # Simple and clear request with the working headers (set in the session)
+        print(f"Fetching train data...")
+        response = session.get(LOCATIONS_URL, timeout=20)
         
-        # Update last successful request time
+        # Check status code explicitly
+        if response.status_code != 200:
+            print(f"Error: Received status code {response.status_code}")
+            return [], datetime.now().strftime('%H:%M:%S') + f" (Error: {response.status_code})"
+            
+        # Update the time of our last successful request
         last_request_time = time.time()
         
         # Parse the protobuf message
@@ -286,8 +288,8 @@ def update_map(train_data):
             
         marker_colors.append(color)
     
-    # Add train markers with hover information
-    fig.add_trace(go.Scattermapbox(
+    # Add train markers with hover information - using Scattermap instead of deprecated Scattermapbox
+    fig.add_trace(go.Scattermap(
         lat=train_df['lat'],
         lon=train_df['lon'],
         mode='markers+text',
@@ -308,9 +310,9 @@ def update_map(train_data):
         hovertemplate='%{hovertext}<extra></extra>'  # Remove trace name from hover
     ))
     
-    # Configure the map layout
+    # Configure the map layout - using modern 'map' property instead of 'mapbox'
     fig.update_layout(
-        mapbox={
+        map={
             'style': "open-street-map",
             'center': {'lat': FINLAND_CENTER['lat'], 'lon': FINLAND_CENTER['lon']},
             'zoom': 5.5
