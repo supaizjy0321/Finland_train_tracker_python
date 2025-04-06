@@ -7,9 +7,10 @@ A real-time web application that displays the current locations of trains across
 ## Features
 
 - 🚆 **Real-time Train Tracking**: View the current locations of all trains in Finland
-- 🔍 **Search Function**: Find specific trains by ID
+- 🔍 **Precise Search**: Find specific trains by ID with exact matching
 - 🔄 **Auto-refresh**: Data updates automatically every 30 seconds
-- 🗺️ **Interactive Map**: Easy-to-use map interface with train markers
+- 🗺️ **Interactive Map**: Clean and intuitive map interface with color-coded train markers
+- 📊 **Train Statistics**: View counts of moving and stationary trains
 - 📱 **Responsive Design**: Works on desktop and mobile devices
 
 ## How It Works
@@ -50,6 +51,12 @@ source venv/bin/activate
 ### Step 3: Install Dependencies
 
 ```bash
+pip install -r requirements.txt
+```
+
+Or install packages individually:
+
+```bash
 pip install dash plotly pandas requests gtfs-realtime-bindings
 ```
 
@@ -69,10 +76,12 @@ http://127.0.0.1:8050/
 ## Using the Application
 
 1. **View All Trains**: When you first load the application, you'll see all active trains on the map
-2. **Search for Trains**: Use the search box in the sidebar to find specific trains by ID
-3. **View Train Details**: Click on any train marker to see detailed information
-4. **Manual Refresh**: Click the "Refresh" button to update the data immediately
-5. **Auto-refresh**: Data automatically updates every 30 seconds
+2. **Understand the Colors**: Blue markers represent moving trains, red markers are stationary trains
+3. **Search for Trains**: Use the search box in the sidebar to find specific trains by ID (exact matching is used for precise results)
+4. **View Train Details**: Click on any train marker to see detailed information including speed and route
+5. **View Statistics**: The sidebar shows total counts of trains and their status
+6. **Manual Refresh**: Click the "Refresh" button to update the data immediately
+7. **Auto-refresh**: Data automatically updates every 30 seconds
 
 ## Customization
 
@@ -85,9 +94,10 @@ You can customize various aspects of the application by modifying the following:
 ## Technology Stack
 
 - **[Dash](https://dash.plotly.com/)**: Python framework for building web applications
-- **[Plotly](https://plotly.com/python/)**: Interactive visualization library
+- **[Plotly](https://plotly.com/python/)**: Interactive visualization library with MapLibre integration
 - **[Pandas](https://pandas.pydata.org/)**: Data manipulation and analysis
 - **[GTFS-RT](https://developers.google.com/transit/gtfs-realtime)**: Protocol Buffers for real-time transit data
+- **[Requests](https://requests.readthedocs.io/)**: HTTP library for API communication
 
 ## Data Source
 
