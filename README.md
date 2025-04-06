@@ -85,12 +85,19 @@ http://127.0.0.1:8050/
 
 ## Online Demo
 
-You can also view a live demo of this application at:
-[https://finland-train-tracker-51e91f6fe982.herokuapp.com/](https://finland-train-tracker-51e91f6fe982.herokuapp.com/)
+You can view a live demo of this application at:
+[https://finland-train-tracker-python.vercel.app/](https://finland-train-tracker-python.vercel.app/)
 
-## Note for Developers
+## Deployment on Vercel
 
-This application includes configuration files (Procfile, runtime.txt) that enable deployment to cloud platforms like Heroku. These files don't affect local usage and can be ignored if you're running the application locally.
+This application can be easily deployed on Vercel for free:
+
+1. **Fork or clone this repository** to your GitHub account
+2. **Sign up for Vercel** (free tier) at [vercel.com](https://vercel.com/) using your GitHub account
+3. **Create new project** from your forked/cloned repository 
+4. **Deploy** without changing any settings - Vercel will automatically detect the Python app
+
+The application includes all necessary configuration files (`vercel.json` and the `/api` folder) for Vercel deployment.
 
 ## Customization
 
