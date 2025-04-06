@@ -143,6 +143,13 @@ body {
     font-size: 0.9rem;
 }
 
+.search-hint {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
 .train-list {
     flex: 1;
     overflow-y: auto;

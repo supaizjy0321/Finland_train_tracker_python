@@ -180,6 +180,7 @@ app.layout = html.Div([
             html.Div([
                 html.H2("Active Trains"),
                 dcc.Input(id="train-search", type="text", placeholder="Search by train ID..."),
+                html.Div("Enter exact train number for precise results", className="search-hint"),
             ], className="sidebar-header"),
             
             html.Div(id="train-list", className="train-list")
@@ -343,20 +344,29 @@ def update_train_list(train_data, search_value):
     
     # Apply search filter if specified
     if search_value:
+        search_value = search_value.strip()  # Remove leading/trailing whitespace
+        
         # Check if search is a numeric value
         if search_value.isdigit():
-            # For numeric searches, try exact match first
-            exact_matches = df[df['id'].astype(str) == search_value]
+            # For numeric searches, use exact match if it's the full number
+            # This ensures "9" only matches train ID "9", not "149" or "92"
+            df = df[df['id'].astype(str) == search_value]
             
-            # If exact matches found, use only those
-            if not exact_matches.empty:
-                df = exact_matches
-            else:
-                # Otherwise, fall back to contains search
-                df = df[df['id'].astype(str).str.contains(search_value, case=False)]
+            # If no exact matches found (and search is short), try word boundary search
+            if df.empty and len(search_value) <= 3:
+                # This will match at beginning or end of ID or as a whole number
+                pattern = fr'\b{search_value}\b'
+                df = df[df['id'].astype(str).str.match(pattern, case=False)]
+                
+                # If still no matches, then fallback to contains
+                if df.empty:
+                    df = df[df['id'].astype(str).str.contains(search_value, case=False)]
         else:
             # For non-numeric searches, use contains as before
             df = df[df['id'].astype(str).str.contains(search_value, case=False)]
+            
+        # Print diagnostic information
+        print(f"Search: '{search_value}', found {len(df)} matches")
     
     # Sort by train ID
     df = df.sort_values('id')
